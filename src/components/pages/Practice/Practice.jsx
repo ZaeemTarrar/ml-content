@@ -5,7 +5,7 @@ import { useState } from "react";
 const Practice = (props) => {
   const options = {
     task: "classification",
-    debug: true,
+    debug: false,
   };
 
   const trainingOptions = {
@@ -13,16 +13,7 @@ const Practice = (props) => {
     batchSize: 33,
   };
 
-  //   const [data, setData] = useState([
-  //     { r: 255, g: 0, b: 0, color: "red-ish" },
-  //     { r: 254, g: 0, b: 0, color: "red-ish" },
-  //     { r: 253, g: 0, b: 0, color: "red-ish" },
-  //     { r: 0, g: 0, b: 255, color: "blue-ish" },
-  //     { r: 0, g: 0, b: 254, color: "blue-ish" },
-  //     { r: 0, g: 0, b: 253, color: "blue-ish" },
-  //   ]);
-
-  const data = [
+  const [data, setData] = useState([
     { r: 255, g: 0, b: 0, color: "red-ish" },
     { r: 250, g: 0, b: 0, color: "red-ish" },
     { r: 245, g: 0, b: 0, color: "red-ish" },
@@ -32,7 +23,7 @@ const Practice = (props) => {
     { r: 0, g: 255, b: 0, color: "green-ish" },
     { r: 0, g: 250, b: 0, color: "green-ish" },
     { r: 0, g: 245, b: 0, color: "green-ish" },
-  ];
+  ]);
 
   const nn = ml5.neuralNetwork(options);
 
@@ -57,8 +48,8 @@ const Practice = (props) => {
     nn.train(trainingOptions, whileTraining, finishedTraining);
   };
 
-  const whileTraining = (epoch) => {
-    console.log("Epoch: ", epoch);
+  const whileTraining = (epoch, loss) => {
+    console.log(`Epoch: ${epoch} , Loss: `, loss);
   };
 
   const finishedTraining = () => {
@@ -93,16 +84,39 @@ const Practice = (props) => {
     <>
       <br />
       <div className="container">
-        <button onClick={() => Train()} className="btn btn-primary">
-          Train
-        </button>
+        <div>
+          <br />
+          <button onClick={() => Train()} className="btn btn-primary">
+            Train
+          </button>
+        </div>
         <br />
-        <button
-          onClick={() => Predict({ r: 0, g: 0, b: 255 })}
-          className="btn btn-success"
-        >
-          Predict
-        </button>
+        <div>
+          <button
+            onClick={() => Predict({ r: 255, g: 0, b: 0 })}
+            className="btn"
+            style={{ background: "red", color: "#fff" }}
+          >
+            Red
+          </button>
+          &nbsp;
+          <button
+            onClick={() => Predict({ r: 0, g: 0, b: 255 })}
+            className="btn"
+            style={{ background: "blue", color: "#fff" }}
+          >
+            Blue
+          </button>
+          &nbsp;
+          <button
+            onClick={() => Predict({ r: 0, g: 255, b: 0 })}
+            className="btn"
+            style={{ background: "green", color: "#fff" }}
+          >
+            Green
+          </button>
+          &nbsp;
+        </div>
       </div>
     </>
   );
